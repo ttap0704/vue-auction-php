@@ -1,5 +1,6 @@
 {
     "require": {
+        "odan/session": "^5.1",
         "php-di/php-di": "^6.0",
         "selective/basepath": "^2.1",
         "slim/psr7": "^1",

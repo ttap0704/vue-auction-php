@@ -5,11 +5,27 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use Selective\BasePath\BasePathMiddleware;
+use Odan\Session\PhpSession;
+use Odan\Session\SessionInterface;
+use Odan\Session\Middleware\SessionMiddleware;
 
 return [
   'settings' => function () {
     return require __DIR__ . '/settings.php';
   },
+
+  SessionInterface::class => function (ContainerInterface $container) {
+    $settings = $container->get('settings');
+    $session = new PhpSession();
+    $session->setOptions((array)$settings['session']);
+
+    return $session;
+  },
+
+  SessionMiddleware::class => function (ContainerInterface $container) {
+    return new SessionMiddleware($container->get(SessionInterface::class));
+  },
+
 
   App::class => function (ContainerInterface $container) {
     AppFactory::setContainer($container);
