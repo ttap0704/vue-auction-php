@@ -33,13 +33,7 @@ final class PostDetailGetter
      */
     public function getDetail($pid): array
     {
-
-        // Insert user
-        $posts = $this->repository->checkDetail($pid);
-
-        // Logging here: User created successfully
-        //$this->logger->info(sprintf('User created successfully: %s', $userId));
-
-        return $posts;
+        $detail = $this->repository->checkDetail($pid);
+        return $detail;
     }
 }

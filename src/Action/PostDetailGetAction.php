@@ -47,6 +47,6 @@ final class PostDetailGetAction
         // Build the HTTP response
         $response->getBody()->write((string)json_encode($result));
 
-        return $response->withStatus(200);
+        return $response->withStatus(201);
     }
 }
