@@ -55,7 +55,7 @@ final class UserLoginAction
       $this->session->start();
       $this->session->regenerateId();
 
-      $this->session->set('id', $result['user_data']['id']);
+      $this->session->set('uid', $result['user_data']['id']);
       $this->session->set('email', $result['user_data']['email']);
 
     }

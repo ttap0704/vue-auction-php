@@ -13,9 +13,7 @@ return [
   'settings' => function () {
     return require __DIR__ . '/settings.php';
   },
-  'upload_directory' => function () {
-    return __DIR__ . '/uploads';
-  },
+
   SessionInterface::class => function (ContainerInterface $container) {
     $settings = $container->get('settings');
     $session = new PhpSession();
@@ -30,7 +28,7 @@ return [
 
 
   App::class => function (ContainerInterface $container) {
-    
+
     AppFactory::setContainer($container);
 
     return AppFactory::create();
