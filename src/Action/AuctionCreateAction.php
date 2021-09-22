@@ -2,7 +2,7 @@
 
 namespace App\Action;
 
-// use App\Domain\Auction\Service\AuctionCreator;
+use App\Domain\Auction\Service\AuctionCreator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -11,20 +11,20 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class AuctionCreateAction
 {
-    // /**
-    //  * @var AuctionCreator
-    //  */
-    // private $auctionCreator;
+    /**
+     * @var AuctionCreator
+     */
+    private $auctionCreator;
 
-    // /**
-    //  * The constructor.
-    //  *
-    //  * @param AuctionCreator 
-    //  */
-    // public function __construct(AuctionCreator $auctionCreator)
-    // {
-    //     $this->auctionCreator = $auctionCreator;
-    // }
+    /**
+     * The constructor.
+     *
+     * @param AuctionCreator 
+     */
+    public function __construct(AuctionCreator $auctionCreator)
+    {
+        $this->auctionCreator = $auctionCreator;
+    }
 
     /**
      * Invoke.
@@ -37,19 +37,12 @@ final class AuctionCreateAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         // Collect input from the HTTP request
-        // $data = (array)$request->getParsedBody();
-        $test = '123';
+        $data = (array)$request->getParsedBody();
 
-        // Invoke the Domain with inputs and retain the result
-        // $auction_id = $this->auctionCreator->createAuction($data);
-
-        // // Transform the result into the JSON representation
-        // $result = [
-        //     'auction_id' => $auction_id
-        // ];
+        $auction_id = $this->auctionCreator->createAuction($data);
 
         // Build the HTTP response
-        $response->getBody()->write((string)json_encode(['test' => $test]));
+        $response->getBody()->write((string)json_encode(['result' => $auction_id]));
 
         return $response->withStatus(201);
     }

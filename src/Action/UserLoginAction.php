@@ -50,6 +50,9 @@ final class UserLoginAction
       'user_data' => $userData
     ];
 
+    $flash = $this->session->getFlash();
+    $flash->clear();
+
     if ($result['user_data']['pass'] == true) {
       $this->session->destroy();
       $this->session->start();
@@ -57,7 +60,7 @@ final class UserLoginAction
 
       $this->session->set('uid', $result['user_data']['id']);
       $this->session->set('email', $result['user_data']['email']);
-
+      $flash->add('success', 'Login successfully');
     }
 
     $response->getBody()->write((string)json_encode($result));

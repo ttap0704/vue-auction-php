@@ -35,9 +35,9 @@ class AuctionHashtagCreatorRepository
   {
     $f_res = [];
 
-    for ($i = 0, $leng = count($data['hashtag']); $i < $leng; $i++) {
+    for ($i = 0, $leng = count($data); $i < $leng; $i++) {
       $row = [
-        'hashtag' => $data['hashtag'][$i],
+        'hashtag' => $data[$i],
       ];
 
       $find_id = $this->findAuctionHashtag($row['hashtag']);
@@ -57,7 +57,7 @@ class AuctionHashtagCreatorRepository
   private function insertAuctionHashtag(string $hashtag): int
   {
 
-    $sql = "INSERT INTO auctions SET 
+    $sql = "INSERT INTO hashtags SET 
             hashtag=:hashtag";
 
     $stmt = $this->connection->prepare($sql);
@@ -81,7 +81,7 @@ class AuctionHashtagCreatorRepository
     $res = $stmt->fetch();
 
     if ($res > 0) {
-      $new_res = $res;
+      $new_res = $res['id'];
     } else {
       $new_res = 0;
     }

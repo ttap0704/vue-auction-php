@@ -34,6 +34,7 @@ final class AuctionHashtagCreator
     public function createHashtag(array $data): array
     {
         $hashtags = $this->repository->returnHashtag($data);
+        // $hashtags = $data;
 
         return (array) $hashtags;
     }

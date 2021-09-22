@@ -34,11 +34,12 @@ class AuctionCreatorRepository
     public function insertAuction(array $post): int
     {
         $row = [
-            'host' => $this->session->get('uid'),
+            'host' => $post['host'],
             'title' => $post['title'],
             'content' => $post['content'],
             's_price' => $post['s_price'],
-            'e_price' => $post['e_price'],
+            'd_price' => $post['d_price'],
+            'hashtags' => $post['hashtags']
         ];
 
         $sql = "INSERT INTO auctions SET 
@@ -46,14 +47,16 @@ class AuctionCreatorRepository
                 title=:title,
                 content=:content,
                 s_price=:s_price,
-                e_price=:e_price";
+                d_price=:d_price,
+                hashtags=:hashtags";
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':host', $row['host']);
         $stmt->bindParam(':title', $row['title']);
         $stmt->bindParam(':content', $row['content']);
         $stmt->bindParam(':s_price', $row['s_price']);
-        $stmt->bindParam(':e_price', $row['e_price']);
+        $stmt->bindParam(':d_price', $row['d_price']);
+        $stmt->bindParam(':hashtags', $row['hashtags']);
         $stmt->execute();
 
         return (int)$this->connection->lastInsertId();
