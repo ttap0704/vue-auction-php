@@ -36,14 +36,12 @@ class AuctionHashtagCreatorRepository
     $f_res = [];
 
     for ($i = 0, $leng = count($data); $i < $leng; $i++) {
-      $row = [
-        'hashtag' => $data[$i],
-      ];
+      $hashtag = $data[$i];
 
-      $find_id = $this->findAuctionHashtag($row['hashtag']);
+      $find_id = $this->findAuctionHashtag((string) $hashtag);
       
       if ($find_id == 0) {
-        $res = $this->insertAuctionHashtag($row['hashtag']);
+        $res = $this->insertAuctionHashtag((string) $hashtag);
       } else {
         $res = $find_id;
       }
@@ -80,7 +78,7 @@ class AuctionHashtagCreatorRepository
     $stmt->execute();
     $res = $stmt->fetch();
 
-    if ($res > 0) {
+    if ($res['id'] > 0) {
       $new_res = $res['id'];
     } else {
       $new_res = 0;

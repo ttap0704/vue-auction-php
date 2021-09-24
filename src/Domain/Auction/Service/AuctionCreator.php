@@ -31,7 +31,7 @@ final class AuctionCreator
      *
      * @return int The new user ID
      */
-    public function createAuction(array $data)
+    public function createAuction(array $data): int
     {
         $auction_id = $this->repository->insertAuction($data);
 

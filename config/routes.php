@@ -18,6 +18,8 @@ return function (App $app) {
 
     $app->post('/auction', \App\Action\AuctionCreateAction::class);
     $app->post('/auction/hashtag', \App\Action\AuctionHashtagCreateAction::class);
+    $app->post('/auction/addimages', \App\Action\AuctionImageAddAction::class);
+    $app->post('/auction/updateimages', \App\Action\AuctionImageUpdateAction::class);
 
     $app->post('/utils/upload', \App\Action\UploadFilesAction::class);
 };
