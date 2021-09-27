@@ -28,7 +28,7 @@ final class UploadFilesAction
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $directory = "/Users/leedaegyu/Documents/projects/vue-auction-php/assets/uploads";
+        $directory = "/Users/leedaegyu/Documents/projects/vue-auction-php/public/assets/uploads";
         $uploadedFiles = $request->getUploadedFiles();
         $result = [];
 
