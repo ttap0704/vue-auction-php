@@ -39,6 +39,7 @@ class AuctionListGetterRepository
     $sql = "SELECT *, auctions.id AS id, auctions.created_at AS created_at
     FROM auctions 
     LEFT JOIN users ON auctions.host_id = users.id 
+    WHERE auctions.created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)
     ORDER BY auctions.created_at DESC LIMIT 20";
 
 
@@ -89,6 +90,7 @@ class AuctionListGetterRepository
     $sql = "SELECT file_name FROM files WHERE auction_id = :auction_id";
     $stmt = $this->connection->prepare($sql);
     $stmt->bindParam(':auction_id', $auction_id);
+    $stmt->execute();
     $res = $stmt->fetchAll();
     
     if (count($res) > 0) {
