@@ -4,12 +4,10 @@ namespace App\Domain\Auction\Repository;
 
 use PDO;
 
-use function DI\string;
-
 /**
  * Repository.
  */
-class AuctionListGetterRepository
+class AuctionDetailGetterRepository
 {
   /**
    * @var PDO The database connection
@@ -33,35 +31,34 @@ class AuctionListGetterRepository
    *
    * @return int The new ID
    */
-  public function checkList(): array
+  public function checkDetail($aid): array
   {
     $row = [];
     $sql = "SELECT *, auctions.id AS id, auctions.created_at AS created_at
     FROM auctions 
     LEFT JOIN users ON auctions.host_id = users.id 
-    WHERE auctions.created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+    WHERE auctions.id = :id
     ORDER BY auctions.created_at DESC LIMIT 20";
 
 
     $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':id', $aid);
     $stmt->execute();
-    $res = $stmt->fetchAll();
+    $res = $stmt->fetch();
 
     $row = [];
 
-    for ($i = 0, $leng = count($res); $i < $leng; $i++) {
-      $row[$i]["id"] = $res[$i]["id"];
-      $row[$i]["content"] = $res[$i]["content"];
-      $row[$i]["title"] = $res[$i]["title"];
-      $row[$i]["created_at"] = $res[$i]["created_at"];
-      $row[$i]["uid"] = $res[$i]["host_id"];
-      $row[$i]["unick"] = $res[$i]["nick"];
-      $row[$i]["s_price"] = $res[$i]["s_price"];
-      $row[$i]["c_price"] = $res[$i]["c_price"];
-      $row[$i]["d_price"] = $res[$i]["d_price"];
-      $row[$i]["hashtags"] = $this->getHashtags($res[$i]["hashtags"]);
-      $row[$i]["images"] = $this->getImages($res[$i]["id"]);
-    }
+    $row["id"] = $res["id"];
+    $row["content"] = $res["content"];
+    $row["title"] = $res["title"];
+    $row["created_at"] = $res["created_at"];
+    $row["uid"] = $res["host_id"];
+    $row["unick"] = $res["nick"];
+    $row["s_price"] = $res["s_price"];
+    $row["c_price"] = $res["c_price"];
+    $row["d_price"] = $res["d_price"];
+    $row["hashtags"] = $this->getHashtags($res["hashtags"]);
+    $row["images"] = $this->getImages($res["id"]);
 
     return (array) $row;
   }
