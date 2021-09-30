@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Post;
 
-use App\Domain\Auction\Service\AuctionCreator;
+use App\Domain\Comunity\Service\PostCreator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Action
  */
-final class AuctionCreateAction
+final class PostCreateAction
 {
     /**
-     * @var AuctionCreator
+     * @var PostCreator
      */
-    private $auctionCreator;
+    private $postCreator;
 
     /**
      * The constructor.
      *
-     * @param AuctionCreator 
+     * @param PostCreator $userCreator The user creator
      */
-    public function __construct(AuctionCreator $auctionCreator)
+    public function __construct(PostCreator $postCreator)
     {
-        $this->auctionCreator = $auctionCreator;
+        $this->postCreator = $postCreator;
     }
 
     /**
@@ -39,11 +39,19 @@ final class AuctionCreateAction
         // Collect input from the HTTP request
         $data = (array)$request->getParsedBody();
 
-        $auction_id = $this->auctionCreator->createAuction($data);
+        // Invoke the Domain with inputs and retain the result
+        $post_id = $this->postCreator->createUser($data);
+
+        // Transform the result into the JSON representation
+        $result = [
+            'post_id' => $post_id
+        ];
 
         // Build the HTTP response
-        $response->getBody()->write((string)json_encode(['result' => $auction_id]));
+        $response->getBody()->write((string)json_encode($result));
 
         return $response->withStatus(201);
+
+        
     }
 }

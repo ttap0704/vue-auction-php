@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Auction;
 
-use App\Domain\User\Service\UserCashCharger;
+use App\Domain\Auction\Service\AuctionListGetter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Action
  */
-final class UserCashChargeAction
+final class AuctionGetListAction
 {
     /**
-     * @var UserCashCharger
+     * @var AuctionListGetter
      */
-    private $userCashCharger;
+    private $auctionListGetter;
 
     /**
      * The constructor.
      *
-     * @param UserCashCharger $userCreator The user creator
+     * @param AuctionListGetter 
      */
-    public function __construct(UserCashCharger $userCashCharger)
+    public function __construct(AuctionListGetter $auctionListGetter)
     {
-        $this->userCashCharger = $userCashCharger;
+        $this->auctionListGetter = $auctionListGetter;
     }
 
     /**
@@ -36,11 +36,10 @@ final class UserCashChargeAction
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $data = (array)$request->getParsedBody();
+        $data = $this->auctionListGetter->getList();
 
-        $res = $this->userCashCharger->chargeCash($data);
-
-        $response->getBody()->write((string)json_encode($res));
+        // Build the HTTP response
+        $response->getBody()->write((string)json_encode($data));
 
         return $response->withStatus(201);
     }

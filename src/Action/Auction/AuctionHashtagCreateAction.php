@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Auction;
 
-use App\Domain\Comunity\Service\PostCreator;
+use App\Domain\Auction\Service\AuctionHashtagCreator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Action
  */
-final class PostCreateAction
+final class AuctionHashtagCreateAction
 {
     /**
-     * @var PostCreator
+     * @var AuctionHashtagCreator
      */
-    private $postCreator;
+    private $auctionHashtagCreator;
 
     /**
      * The constructor.
      *
-     * @param PostCreator $userCreator The user creator
+     * @param AuctionHashtagCreator 
      */
-    public function __construct(PostCreator $postCreator)
+    public function __construct(AuctionHashtagCreator $auctionHashtagCreator)
     {
-        $this->postCreator = $postCreator;
+        $this->auctionHashtagCreator = $auctionHashtagCreator;
     }
 
     /**
@@ -40,18 +40,16 @@ final class PostCreateAction
         $data = (array)$request->getParsedBody();
 
         // Invoke the Domain with inputs and retain the result
-        $post_id = $this->postCreator->createUser($data);
+        $hashtags = $this->auctionHashtagCreator->createHashtag($data);
 
         // Transform the result into the JSON representation
         $result = [
-            'post_id' => $post_id
+            'hashtags' => $hashtags
         ];
 
-        // Build the HTTP response
+        // // Build the HTTP response
         $response->getBody()->write((string)json_encode($result));
 
         return $response->withStatus(201);
-
-        
     }
 }

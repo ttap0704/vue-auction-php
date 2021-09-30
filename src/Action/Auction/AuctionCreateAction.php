@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Auction;
 
-use App\Domain\Auction\Service\AuctionListGetter;
+use App\Domain\Auction\Service\AuctionCreator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Action
  */
-final class AuctionGetListAction
+final class AuctionCreateAction
 {
     /**
-     * @var AuctionListGetter
+     * @var AuctionCreator
      */
-    private $auctionListGetter;
+    private $auctionCreator;
 
     /**
      * The constructor.
      *
-     * @param AuctionListGetter 
+     * @param AuctionCreator 
      */
-    public function __construct(AuctionListGetter $auctionListGetter)
+    public function __construct(AuctionCreator $auctionCreator)
     {
-        $this->auctionListGetter = $auctionListGetter;
+        $this->auctionCreator = $auctionCreator;
     }
 
     /**
@@ -36,10 +36,13 @@ final class AuctionGetListAction
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $data = $this->auctionListGetter->getList();
+        // Collect input from the HTTP request
+        $data = (array)$request->getParsedBody();
+
+        $auction_id = $this->auctionCreator->createAuction($data);
 
         // Build the HTTP response
-        $response->getBody()->write((string)json_encode($data));
+        $response->getBody()->write((string)json_encode(['result' => $auction_id]));
 
         return $response->withStatus(201);
     }

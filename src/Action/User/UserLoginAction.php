@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\User;
 
 use Odan\Session\SessionInterface;
 use App\Domain\User\Service\UserLogin;

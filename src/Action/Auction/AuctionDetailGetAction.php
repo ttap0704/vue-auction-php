@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Auction;
 
 use App\Domain\Auction\Service\AuctionDetailGetter;
 use Psr\Http\Message\ResponseInterface;

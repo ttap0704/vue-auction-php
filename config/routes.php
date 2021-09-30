@@ -7,21 +7,21 @@ return function (App $app) {
         return $response;
     });
 
-    $app->post('/users/join', \App\Action\UserCreateAction::class);
-    $app->post('/users/login', \App\Action\UserLoginAction::class);
-    $app->post('/users/cash', \App\Action\UserCashChargeAction::class);
+    $app->post('/users/join', \App\Action\User\UserCreateAction::class);
+    $app->post('/users/login', \App\Action\User\UserLoginAction::class);
+    $app->post('/users/cash', \App\Action\User\UserCashChargeAction::class);
 
-    $app->get('/comunity/post', \App\Action\PostGetAction::class);
-    $app->get('/comunity/post/detail/{pid}', \App\Action\PostDetailGetAction::class);
-    $app->post('/comunity/post/add', \App\Action\PostCreateAction::class);
+    $app->get('/comunity/post', \App\Action\Post\PostGetAction::class);
+    $app->get('/comunity/post/detail/{pid}', \App\Action\Post\PostDetailGetAction::class);
+    $app->post('/comunity/post/add', \App\Action\Post\PostCreateAction::class);
 
 
-    $app->post('/auction', \App\Action\AuctionCreateAction::class);
-    $app->get('/auction/getauctionlist', \App\Action\AuctionGetListAction::class);
-    $app->get('/auction/detail/{aid}', \App\Action\AuctionDetailGetAction::class);
-    $app->post('/auction/hashtag', \App\Action\AuctionHashtagCreateAction::class);
-    $app->post('/auction/addimages', \App\Action\AuctionImageAddAction::class);
-    $app->post('/auction/updateimages', \App\Action\AuctionImageUpdateAction::class);
+    $app->post('/auction', \App\Action\Auction\AuctionCreateAction::class);
+    $app->get('/auction/getauctionlist', \App\Action\Auction\AuctionGetListAction::class);
+    $app->get('/auction/detail/{aid}', \App\Action\Auction\AuctionDetailGetAction::class);
+    $app->post('/auction/hashtag', \App\Action\Auction\AuctionHashtagCreateAction::class);
+    $app->post('/auction/addimages', \App\Action\Auction\AuctionImageAddAction::class);
+    $app->post('/auction/updateimages', \App\Action\Auction\AuctionImageUpdateAction::class);
 
-    $app->post('/utils/upload', \App\Action\UploadFilesAction::class);
+    $app->post('/utils/upload', \App\Util\Action\UploadFilesAction::class);
 };

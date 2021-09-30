@@ -38,6 +38,7 @@ class AuctionCreatorRepository
             'title' => $post['title'],
             'content' => $post['content'],
             's_price' => $post['s_price'],
+            'c_price' => $post['s_price'],
             'd_price' => $post['d_price'],
             'hashtags' => $post['hashtags']
         ];
@@ -47,6 +48,7 @@ class AuctionCreatorRepository
                 title=:title,
                 content=:content,
                 s_price=:s_price,
+                c_price=:c_price,
                 d_price=:d_price,
                 hashtags=:hashtags";
 
@@ -55,6 +57,7 @@ class AuctionCreatorRepository
         $stmt->bindParam(':title', $row['title']);
         $stmt->bindParam(':content', $row['content']);
         $stmt->bindParam(':s_price', $row['s_price']);
+        $stmt->bindParam(':c_price', $row['c_price']);
         $stmt->bindParam(':d_price', $row['d_price']);
         $stmt->bindParam(':hashtags', $row['hashtags']);
         $stmt->execute();

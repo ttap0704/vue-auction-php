@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Post;
 
-use App\Domain\Comunity\Service\PostDetailGetter;
+use App\Domain\Comunity\Service\PostGetter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Action
  */
-final class PostDetailGetAction
+final class PostGetAction
 {
     /**
-     * @var PostDetailGetter
+     * @var PostGetter
      */
-    private $postDetailGetter;
+    private $postGetter;
 
     /**
      * The constructor.
      *
-     * @param PostDetailGetter 
+     * @param PostGetter 
      */
-    public function __construct(PostDetailGetter $postDetailGetter)
+    public function __construct(PostGetter $postGetter)
     {
-        $this->postDetailGetter = $postDetailGetter;
+        $this->postGetter = $postGetter;
     }
 
     /**
@@ -34,19 +34,19 @@ final class PostDetailGetAction
      *
      * @return ResponseInterface The response
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         // Invoke the Domain with inputs and retain the result
-        $detail = $this->postDetailGetter->getDetail($args["pid"]);
+        $posts = $this->postGetter->getPosts();
 
         // Transform the result into the JSON representation
         $result = [
-            'detail' => $detail
+            'posts' => $posts
         ];
 
         // Build the HTTP response
         $response->getBody()->write((string)json_encode($result));
 
-        return $response->withStatus(201);
+        return $response->withStatus(200);
     }
 }

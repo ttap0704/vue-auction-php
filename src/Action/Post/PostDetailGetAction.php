@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Post;
 
-use App\Domain\User\Service\UserCreator;
+use App\Domain\Comunity\Service\PostDetailGetter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Action
  */
-final class UserCreateAction
+final class PostDetailGetAction
 {
     /**
-     * @var UserCreator
+     * @var PostDetailGetter
      */
-    private $userCreator;
+    private $postDetailGetter;
 
     /**
      * The constructor.
      *
-     * @param UserCreator $userCreator The user creator
+     * @param PostDetailGetter 
      */
-    public function __construct(UserCreator $userCreator)
+    public function __construct(PostDetailGetter $postDetailGetter)
     {
-        $this->userCreator = $userCreator;
+        $this->postDetailGetter = $postDetailGetter;
     }
 
     /**
@@ -34,24 +34,19 @@ final class UserCreateAction
      *
      * @return ResponseInterface The response
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        // Collect input from the HTTP request
-        $data = (array)$request->getParsedBody();
-
         // Invoke the Domain with inputs and retain the result
-        $userId = $this->userCreator->createUser($data);
+        $detail = $this->postDetailGetter->getDetail($args["pid"]);
 
         // Transform the result into the JSON representation
         $result = [
-            'user_id' => $userId
+            'detail' => $detail
         ];
 
         // Build the HTTP response
         $response->getBody()->write((string)json_encode($result));
 
         return $response->withStatus(201);
-
-        
     }
 }

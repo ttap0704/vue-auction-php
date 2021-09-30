@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Auction;
 
-use App\Domain\Auction\Service\AuctionImageAdder;
+use App\Domain\Auction\Service\AuctionImageUpdater;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -10,21 +10,21 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Action
  */
-final class AuctionImageAddAction
+final class AuctionImageUpdateAction
 {
   /**
-   * @var AuctionImageAdder
+   * @var AuctionImageUpdater
    */
-  private $auctionImageAdder;
+  private $auctionImageUpdater;
 
   /**
    * The constructor.
    *
-   * @param AuctionImageAdder 
+   * @param AuctionImageUpdater 
    */
-  public function __construct(AuctionImageAdder $auctionImageAdder)
+  public function __construct(AuctionImageUpdater $auctionImageUpdater)
   {
-    $this->auctionImageAdder = $auctionImageAdder;
+    $this->auctionImageUpdater = $auctionImageUpdater;
   }
 
   /**
@@ -39,7 +39,7 @@ final class AuctionImageAddAction
   {
     $data = (array)$request->getParsedBody();
 
-    $res = $this->auctionImageAdder->createAuctionImages($data);
+    $res = $this->auctionImageUpdater->updateAuctionImages($data);
 
     // Build the HTTP response
 
