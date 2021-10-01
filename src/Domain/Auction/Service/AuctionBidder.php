@@ -7,7 +7,7 @@ use App\Domain\Auction\Repository\AuctionBidderRepository;
 /**
  * Service.
  */
-final class AuctionCreator
+final class AuctionBidder
 {
     /**
      * @var AuctionBidderRepository
@@ -31,10 +31,10 @@ final class AuctionCreator
      *
      * @return int The new user ID
      */
-    public function bidAuction(array $data): int
+    public function bidAuction(array $data): array
     {
-        $auction_id = $this->repository->updateBid($data);
+        $res = $this->repository->updateBid($data);
 
-        return $auction_id;
+        return $res;
     }
 }

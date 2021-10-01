@@ -1,4 +1,5 @@
 <?php
+
 use Slim\App;
 
 return function (App $app) {
@@ -22,6 +23,7 @@ return function (App $app) {
     $app->post('/auction/hashtag', \App\Action\Auction\AuctionHashtagCreateAction::class);
     $app->post('/auction/addimages', \App\Action\Auction\AuctionImageAddAction::class);
     $app->post('/auction/updateimages', \App\Action\Auction\AuctionImageUpdateAction::class);
+    $app->post('/auction/bid', \App\Action\Auction\AuctionBidAction::class);
 
-    $app->post('/utils/upload', \App\Util\Action\UploadFilesAction::class);
+    $app->post('/utils/upload', \App\Action\Util\UploadFilesAction::class);
 };
