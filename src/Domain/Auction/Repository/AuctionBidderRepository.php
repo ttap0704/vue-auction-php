@@ -39,6 +39,7 @@ class AuctionBidderRepository
         $updated_auction = $this->updateAuction($data);
         if ($updated_auction > 0) {
           $res['success'] = true;
+          $res['remain_cash'] = $this->getUsercash($data);
         } else {
           $res['success'] = false;
         }
@@ -124,6 +125,19 @@ class AuctionBidderRepository
     $stmt->execute();
     $res = $stmt->rowCount();
 
+    return $res;
+  }
+
+  private function getUsercash(array $data): array
+  {
+    $id = $data['uid'];
+    
+    $sql = "SELECT cash FROM users WHERE id = :id";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $res['cash'] = $stmt->fetch()['cash'];
+    
     return $res;
   }
 }
