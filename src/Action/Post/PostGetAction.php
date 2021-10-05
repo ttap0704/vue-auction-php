@@ -41,7 +41,7 @@ final class PostGetAction
 
         // Transform the result into the JSON representation
         $result = [
-            'posts' => $posts
+            'posts' => $posts,
         ];
 
         // Build the HTTP response

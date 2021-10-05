@@ -1,7 +1,9 @@
 {
     "require": {
+        "cboden/ratchet": "^0.4.3",
         "odan/session": "^5.1",
         "php-di/php-di": "^6.0",
+        "react/http": "^1.5",
         "selective/basepath": "^2.1",
         "slim/psr7": "^1",
         "slim/slim": "^4.4"

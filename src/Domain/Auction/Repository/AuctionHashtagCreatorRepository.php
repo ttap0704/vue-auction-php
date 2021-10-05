@@ -39,7 +39,7 @@ class AuctionHashtagCreatorRepository
       $hashtag = $data[$i];
 
       $find_id = $this->findAuctionHashtag((string) $hashtag);
-      
+
       if ($find_id == 0) {
         $res = $this->insertAuctionHashtag((string) $hashtag);
       } else {
