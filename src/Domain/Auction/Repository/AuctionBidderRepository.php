@@ -32,14 +32,21 @@ class AuctionBidderRepository
   public function updateBid(array $data): array
   {
     $res = [];
-    $updated = $this->updateUserCash($data);
-    if ($updated['success'] == true) {
-      $insert_id = $this->insertBidDetails($data);
-      if ($insert_id > 0) {
-        $updated_auction = $this->updateAuction($data);
-        if ($updated_auction > 0) {
-          $res['success'] = true;
-          $res['remain_cash'] = $this->getUsercash($data);
+
+    $last_bidder_updated = $this->lastBidderUpdate($data);
+
+    if ($last_bidder_updated['success']) {
+      $updated = $this->updateUserCash($data);
+      if ($updated['success'] == true) {
+        $insert_id = $this->insertBidDetails($data);
+        if ($insert_id > 0) {
+          $updated_auction = $this->updateAuction($data);
+          if ($updated_auction > 0) {
+            $res['success'] = true;
+            $res['remain_cash'] = $this->getUsercash($data);
+          } else {
+            $res['success'] = false;
+          }
         } else {
           $res['success'] = false;
         }
@@ -47,9 +54,8 @@ class AuctionBidderRepository
         $res['success'] = false;
       }
     } else {
-      $res = $updated;
+      $res['success'] = false;
     }
-
 
     return (array)$res;
   }
@@ -87,6 +93,46 @@ class AuctionBidderRepository
     }
 
     return $res;
+  }
+
+  private function lastBidderUpdate(array $data)
+  {
+    $row = [];
+
+    $aid = $data['aid'];
+
+    $sql = "SELECT price, bidder FROM bid_details WHERE auction_id = :aid ORDER BY id DESC LIMIT 1";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':aid', $aid);
+    $stmt->execute();
+    $res = $stmt->fetch();
+
+    if ($res != false) {
+      $sql = "UPDATE users SET cash = (cash + :price) WHERE id = :id";
+      $stmt = $this->connection->prepare($sql);
+      $stmt->bindParam(':id', $res['bidder']);
+      $stmt->bindParam(':price', $res['price']);
+      $stmt->execute();
+      $count = $stmt->rowCount();
+
+      if ($count > 0) {
+        $row = array(
+          'success' => true,
+          'price' => $res['price'],
+          'uid' => $res['bidder']
+        );
+      } else {
+        $row = array(
+          'success' => false
+        );
+      }
+    } else {
+      $row = array(
+        'success' => true,
+      );
+    }
+
+    return $row;
   }
 
   private function insertBidDetails(array $data): int
@@ -131,13 +177,13 @@ class AuctionBidderRepository
   private function getUsercash(array $data): array
   {
     $id = $data['uid'];
-    
+
     $sql = "SELECT cash FROM users WHERE id = :id";
     $stmt = $this->connection->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $res['cash'] = $stmt->fetch()['cash'];
-    
+
     return $res;
   }
 }

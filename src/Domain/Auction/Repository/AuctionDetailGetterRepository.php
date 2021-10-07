@@ -67,15 +67,17 @@ class AuctionDetailGetterRepository
   {
     $row = [];
 
-    $where_query = "(" . $hashtags . ")";
+    if (strlen($hashtags) > 0) {
+      $where_query = "(" . $hashtags . ")";
 
-    $sql = "SELECT hashtag FROM hashtags WHERE id IN $where_query";
-    $stmt = $this->connection->prepare($sql);
-    $stmt->execute();
-    $res = $stmt->fetchAll();
+      $sql = "SELECT hashtag FROM hashtags WHERE id IN $where_query";
+      $stmt = $this->connection->prepare($sql);
+      $stmt->execute();
+      $res = $stmt->fetchAll();
 
-    for ($i = 0, $leng = count($res); $i < $leng; $i++) {
-      array_push($row, $res[$i]['hashtag']);
+      for ($i = 0, $leng = count($res); $i < $leng; $i++) {
+        array_push($row, $res[$i]['hashtag']);
+      }
     }
 
     return (array) $row;
