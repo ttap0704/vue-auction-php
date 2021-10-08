@@ -36,11 +36,13 @@ final class AuctionGetListAction
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $data = $this->auctionListGetter->getList();
+        $req_qeury = $request->getQueryParams();
+        $data = $this->auctionListGetter->getList($req_qeury);
 
         // Build the HTTP response
         $response->getBody()->write((string)json_encode($data));
 
         return $response->withStatus(201);
     }
+
 }

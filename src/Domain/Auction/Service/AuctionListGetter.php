@@ -31,9 +31,16 @@ final class AuctionListGetter
      *
      * @return int The new user ID
      */
-    public function getList(): array
+    public function getList($params): array
     {
-        $data = $this->repository->checkList();
+        $data = array();
+
+        $hashtag = "";
+        if (isset($params['hashtag'])) {
+            $hashtag = $params['hashtag'];
+        }
+        $data = $this->repository->checkList($hashtag);
+        // $data['test'] = $hashtag;
 
         return (array) $data;
     }

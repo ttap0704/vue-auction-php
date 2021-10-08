@@ -43,7 +43,7 @@ class AuctionBidderRepository
           $updated_auction = $this->updateAuction($data);
           if ($updated_auction > 0) {
             $res['success'] = true;
-            $res['remain_cash'] = $this->getUsercash($data);
+            $res['remain_cash'] = $this->getUserCash($data);
           } else {
             $res['success'] = false;
           }
@@ -163,7 +163,18 @@ class AuctionBidderRepository
     $c_price = $data['cash'];
     $aid = $data['aid'];
 
-    $sql = "UPDATE auctions SET f_bidder = :f_bidder, c_price = :c_price WHERE id = :aid";
+    $sql = "SELECT d_price FROM auctions WHERE id = :aid";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':aid', $aid);
+    $stmt->execute();
+    $res = $stmt->fetch();
+
+    $done = "";
+    if ($res['d_price'] <= $c_price) {
+      $done = "done = 1";
+    }
+
+    $sql = "UPDATE auctions SET f_bidder = :f_bidder, c_price = :c_price, $done WHERE id = :aid";
     $stmt = $this->connection->prepare($sql);
     $stmt->bindParam(':f_bidder', $f_bidder);
     $stmt->bindParam(':c_price', $c_price);
@@ -174,7 +185,7 @@ class AuctionBidderRepository
     return $res;
   }
 
-  private function getUsercash(array $data): array
+  private function getUserCash(array $data): array
   {
     $id = $data['uid'];
 

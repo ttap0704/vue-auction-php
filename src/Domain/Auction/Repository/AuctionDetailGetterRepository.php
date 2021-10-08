@@ -54,6 +54,7 @@ class AuctionDetailGetterRepository
     $row["created_at"] = $res["created_at"];
     $row["uid"] = $res["host_id"];
     $row["unick"] = $res["nick"];
+    $row["done"] = $res["done"];
     $row["s_price"] = $res["s_price"];
     $row["c_price"] = $res["c_price"];
     $row["d_price"] = $res["d_price"];
