@@ -60,6 +60,7 @@ class AuctionDetailGetterRepository
     $row["d_price"] = $res["d_price"];
     $row["hashtags"] = $this->getHashtags($res["hashtags"]);
     $row["images"] = $this->getImages($res["id"]);
+    $row["history"] = $this->getHistory($res["id"]);
 
     return (array) $row;
   }
@@ -97,6 +98,30 @@ class AuctionDetailGetterRepository
     if (count($res) > 0) {
       for ($i = 0, $leng = count($res); $i < $leng; $i++) {
         array_push($row, $res[$i]['file_name']);
+      }
+    } else {
+      array_push($row, null);
+    }
+
+    return (array) $row;
+  }
+
+  private function getHistory(string $auction_id): array
+  {
+    $row = [];
+
+    $sql = "SELECT bid_at, price, bid_details.id AS id, users.nick AS unick FROM bid_details 
+    LEFT JOIN users ON bid_details.bidder = users.id 
+    WHERE auction_id = :auction_id
+    ORDER BY bid_details.bid_at DESC";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':auction_id', $auction_id);
+    $stmt->execute();
+    $res = $stmt->fetchAll();
+
+    if (count($res) > 0) {
+      for ($i = 0, $leng = count($res); $i < $leng; $i++) {
+        array_push($row, $res[$i]);
       }
     } else {
       array_push($row, null);

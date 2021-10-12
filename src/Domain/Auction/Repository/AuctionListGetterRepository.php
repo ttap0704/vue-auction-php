@@ -55,7 +55,7 @@ class AuctionListGetterRepository
     FROM auctions 
     LEFT JOIN users ON auctions.host_id = users.id 
     $where
-    -- WHERE auctions.created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY) $where
+    WHERE auctions.created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY) AND auctions.done = 0 $where
     ORDER BY auctions.created_at DESC LIMIT 20";
 
     $stmt = $this->connection->prepare($sql);
