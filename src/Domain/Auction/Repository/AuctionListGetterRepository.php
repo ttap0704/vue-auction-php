@@ -39,10 +39,10 @@ class AuctionListGetterRepository
     $where = "";
     if (strlen($hashtag) > 0) {
       $hashtag_ids = explode(",", $this->getHashtagId($hashtag));
-      $where = "WHERE (";
+      $where = "AND (";
       for ($i = 0, $leng = count($hashtag_ids); $i < $leng; $i++) {
         $h_id = $hashtag_ids[$i];
-        $where .= "auctions.hashtags LIKE '%$h_id%'";
+        $where .= "hashtags LIKE '%$h_id%'";
 
         if ($i != $leng - 1) {
           $where .= " OR ";
@@ -54,7 +54,6 @@ class AuctionListGetterRepository
     $sql = "SELECT *, auctions.id AS id, auctions.created_at AS created_at
     FROM auctions 
     LEFT JOIN users ON auctions.host_id = users.id 
-    $where
     WHERE auctions.created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY) AND auctions.done = 0 $where
     ORDER BY auctions.created_at DESC LIMIT 20";
 
